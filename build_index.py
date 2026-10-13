@@ -15,7 +15,8 @@ if not data.exists():
     sys.exit(f"contributions repo not found at {data}; set CONTRIB_DIR")
 
 doi = os.environ.get("ZENODO_DOI", "10.5281/zenodo.XXXXXXX")
-version = os.environ.get("RELEASE_TAG", "v0.1").lstrip("v")
+tag = os.environ.get("RELEASE_TAG", "main")
+version = "v" + tag.lstrip("v") if tag.lower().startswith("v") else "unreleased draft"
 e = html.escape
 
 contribs = yaml.safe_load((data / "contributions.yml").read_text()) or []
@@ -53,7 +54,7 @@ pagetitle: "Open physics data: what license and attribution terms should it carr
 <div class="eyebrow">SESAPS 2026 · Kennesaw, GA · Nov 12–14 · moderated discussion</div>
 <h1>Open physics data: what license and attribution terms should it carry?</h1>
 <p class="lede">Public-access rules now require physics collaborations to plan data releases, but none say what license the data should carry, who must be credited, or what a user may build from it. This page collects what collaborations across physics have actually done, and the questions still open.</p>
-<p class="meta">Organized by Amy Roberts (CU Denver, SuperCDMS) and Michela Taufer (UT Knoxville). Contributions and catalog are licensed CC BY 4.0 and archived at Zenodo with each release.</p>
+<p class="meta">Organized by Amy Roberts (CU Denver, SuperCDMS) and Michela Taufer (UT Knoxville). Contributions are licensed CC BY 4.0 and archived at Zenodo with each release.</p>
 </header>
 
 <h2>Contributions</h2>
@@ -71,7 +72,7 @@ pagetitle: "Open physics data: what license and attribution terms should it carr
 </ol>
 
 <footer>
-Cite as: Roberts, A., Taufer, M., and contributors (2026). <em>Open physics data: what license and attribution terms should it carry?</em> v{e(version)}. Zenodo. <code>doi:{e(doi)}</code><br>
+Cite as: Roberts, A., Taufer, M., and contributors (2026). <em>Open physics data: what license and attribution terms should it carry?</em> {e(version)}. Zenodo. <code>doi:{e(doi)}</code><br>
 Source and contributions: <a href="https://github.com/det-lab/open-physics-data-terms"><code>github.com/det-lab/open-physics-data-terms</code></a>
 </footer>
 </div>

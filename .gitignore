@@ -3,3 +3,5 @@ _site/
 index.qmd
 contributions/*.pdf
 .DS_Store
+
+/.quarto/

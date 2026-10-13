@@ -9,8 +9,6 @@ website:
   title: "Open physics data terms"
   site-url: https://det-lab.github.io/open-physics-data-terms-site/
   navbar: false
-  sidebar: false
-  page-footer: false
 
 format:
   html:
