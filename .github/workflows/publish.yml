@@ -22,6 +22,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Enable GitHub Pages (first run only)
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
       - name: Check out contributions repo
         uses: actions/checkout@v4
         with:
