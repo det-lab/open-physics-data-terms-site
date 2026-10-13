@@ -1,0 +1,64 @@
+name: Build and deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag of det-lab/open-physics-data-terms to build from (blank = latest tag)"
+        required: false
+  repository_dispatch:
+    types: [contributions-released]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out contributions repo
+        uses: actions/checkout@v4
+        with:
+          repository: det-lab/open-physics-data-terms
+          path: data
+          fetch-depth: 0
+
+      - name: Pick the release tag
+        id: tag
+        working-directory: data
+        run: |
+          TAG="${{ github.event.inputs.tag }}"
+          if [ -z "$TAG" ]; then TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo main); fi
+          git checkout "$TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pyyaml
+
+      - name: Render
+        env:
+          CONTRIB_DIR: ${{ github.workspace }}/data
+          RELEASE_TAG: ${{ steps.tag.outputs.tag }}
+          ZENODO_DOI: ${{ vars.ZENODO_DOI }}
+        run: quarto render
+
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: _site }
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
