@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Tag of det-lab/open-physics-data-terms to build from (blank = latest tag)"
+        description: "Ref of det-lab/open-physics-data-terms to build from (blank = main)"
         required: false
   repository_dispatch:
     types: [contributions-released]
@@ -33,13 +33,13 @@ jobs:
           path: data
           fetch-depth: 0
 
-      - name: Pick the release tag
+      - name: Build from main; note the latest release tag for the citation
         id: tag
         working-directory: data
         run: |
-          TAG="${{ github.event.inputs.tag }}"
-          if [ -z "$TAG" ]; then TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo main); fi
-          git checkout "$TAG"
+          REF="${{ github.event.inputs.tag }}"
+          if [ -n "$REF" ]; then git checkout "$REF"; fi
+          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo main)
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
       - uses: quarto-dev/quarto-actions/setup@v2

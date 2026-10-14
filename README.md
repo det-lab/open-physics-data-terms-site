@@ -2,7 +2,7 @@
 
 Quarto website, built from the content repository
 [det-lab/open-physics-data-terms](https://github.com/det-lab/open-physics-data-terms)
-at its latest tag and deployed to GitHub Pages. Nothing in this repo is
+(its `main` branch; the latest release tag is used only for the citation's version label) and deployed to GitHub Pages. Nothing in this repo is
 content; the contributions, catalog, and open questions live in the other one.
 
 ## How it builds
