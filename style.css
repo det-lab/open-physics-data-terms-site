@@ -58,3 +58,10 @@ h1 a:hover{color:var(--accent)}
 .citefmt button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 pre.cite{font-family:var(--mono);font-size:.78rem;line-height:1.4;margin:0;padding:8px 10px;border:1px solid var(--rule);border-radius:3px;overflow-x:auto;white-space:pre;color:var(--fg)}
 footer .src{margin-top:10px}
+.citedetails{margin-top:6px;font-size:.9rem}
+.citedetails summary{font-family:var(--mono);font-size:.74rem;color:var(--muted);cursor:pointer;list-style:none}
+.citedetails summary::before{content:"+ ";}
+.citedetails[open] summary::before{content:"− ";}
+.citedetails .citebox{margin-top:6px}
+.citedetails .cite{font-size:.9rem}
+.citedetails pre.cite{font-size:.74rem}
