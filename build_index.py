@@ -14,9 +14,22 @@ data = Path(os.environ.get("CONTRIB_DIR", here.parent / "open-physics-data-terms
 if not data.exists():
     sys.exit(f"contributions repo not found at {data}; set CONTRIB_DIR")
 
-doi = os.environ.get("ZENODO_DOI", "10.5281/zenodo.XXXXXXX")
-tag = os.environ.get("RELEASE_TAG", "main")
-version = "v" + tag.lstrip("v") if tag.lower().startswith("v") else "unreleased draft"
+def cff(path):
+    """doi and version from a CITATION.cff, if present."""
+    out = {}
+    if path.exists():
+        for line in path.read_text().splitlines():
+            m = re.match(r"^(doi|version):\s*(.+?)\s*$", line)
+            if m:
+                out[m.group(1)] = m.group(2).strip('"')
+    return out
+
+import re
+coll = cff(data / "CITATION.cff")
+doi = coll.get("doi") or "10.5281/zenodo.XXXXXXX"
+version = f"v{coll['version']}" if coll.get("doi") and coll.get("version") else "unreleased draft"
+codebook_dir = Path(os.environ.get("CODEBOOK_DIR", here.parent / "open-physics-data-codebook"))
+cb = cff(codebook_dir / "CITATION.cff")
 e = html.escape
 
 contribs = yaml.safe_load((data / "contributions.yml").read_text()) or []
@@ -221,6 +234,16 @@ write_page("index.qmd", TITLE, "index", index_body, False)
 for old in here.glob("*.qmd"):
     if old.name != "index.qmd":
         old.unlink()
+for i, (slug, title, body) in enumerate(pages):
+    if slug == "papers-and-methods":
+        cb_line = ""
+        if cb.get("doi"):
+            cb_line = (f"\n\n**Survey codebook** v{cb.get('version', '')}: "
+                       f"[doi:{cb['doi']}](https://doi.org/{cb['doi']}) · "
+                       f"[source](https://github.com/det-lab/open-physics-data-codebook)")
+        else:
+            cb_line = "\n\n**Survey codebook** (not yet archived): [source](https://github.com/det-lab/open-physics-data-codebook)"
+        pages[i] = (slug, title, body + cb_line)
 for slug, title, body in pages:
     write_page(f"{slug}.qmd", f"{title} · Open physics data terms", slug, f"<h2>{e(title)}</h2>\n\n{body}", True)
 
