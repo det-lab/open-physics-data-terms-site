@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate index.qmd and one page per section from the contributions repo (checked out at ../data by the
 GitHub Action, or at the path in $CONTRIB_DIR). Runs as a Quarto pre-render step."""
-import csv, html, os, shutil, sys
+import csv, html, os, shutil, sys, datetime
 from pathlib import Path
 
 try:
@@ -99,6 +99,18 @@ bibtex = f"""@misc{{roberts{year}openphysicsdata,
   url       = {{{SITE_URL}}},
   note      = {{{version}}}
 }}"""
+biblatex = f"""% biblatex (biber). Cite a single contribution as @incollection with
+% crossref = {{roberts{year}openphysicsdata}} and its own author and title.
+@collection{{roberts{year}openphysicsdata,
+  editor    = {{Roberts, Amy and Taufer, Michela and Walker, Jessica}},
+  title     = {{{TITLE}}},
+  date      = {{{year}}},
+  version   = {{{version}}},
+  publisher = {{Zenodo}},
+  doi       = {{{doi}}},
+  url       = {{{SITE_URL}}},
+  urldate   = {{{datetime.date.today().isoformat()}}}
+}}"""
 ris = f"""TY  - GEN
 AU  - Roberts, Amy
 AU  - Taufer, Michela
@@ -113,9 +125,10 @@ ER  - """
 FOOTER = f"""<footer>
 <div class="citebar"><span class="citelabel">Cite as</span>
 <span class="citefmt" role="group" aria-label="citation format">
-<button type="button" class="on" data-fmt="apa">APA</button><button type="button" data-fmt="bibtex">BibTeX</button><button type="button" data-fmt="ris">RIS</button></span></div>
+<button type="button" class="on" data-fmt="apa">APA</button><button type="button" data-fmt="bibtex">BibTeX</button><button type="button" data-fmt="biblatex">biblatex</button><button type="button" data-fmt="ris">RIS</button></span></div>
 <div class="cite" data-fmt="apa">{apa}</div>
 <pre class="cite" data-fmt="bibtex" hidden>{e(bibtex)}</pre>
+<pre class="cite" data-fmt="biblatex" hidden>{e(biblatex)}</pre>
 <pre class="cite" data-fmt="ris" hidden>{e(ris)}</pre>
 <p class="src">Source and contributions: <a href="https://github.com/det-lab/open-physics-data-terms"><code>github.com/det-lab/open-physics-data-terms</code></a></p>
 </footer>
