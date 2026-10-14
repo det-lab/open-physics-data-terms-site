@@ -30,11 +30,12 @@ for c in contribs:
 def contrib_li(c):
     tag = "from a call" if c.get("kind") == "call" else "written page"
     pdf = f'contributions/{Path(c["file"]).name}'
-    link = f'<a href="{e(pdf)}">PDF</a>' if (data / c["file"]).exists() else '<span class="muted">PDF pending</span>'
+    label = e(c.get("title") or "PDF")
+    link = f'<a href="{e(pdf)}">{label}</a>' if (data / c["file"]).exists() else '<span class="muted">PDF pending</span>'
     return (f'<li><div class="who">{e(c["name"])} <span class="aff">— {e(c["affiliation"])}</span> '
             f'<span class="tag">{tag}</span></div>'
             f'<div class="desc">{e(c["descriptor"])}</div>'
-            f'<div class="links">{link} · received {e(str(c.get("received") or "—"))} · '
+            f'<div class="links"><span class="ttl">{link}</span><br>received {e(str(c.get("received") or "—"))} · '
             f'approved {e(str(c.get("approved") or "—"))} · CC BY 4.0</div></li>')
 
 sections = ""
