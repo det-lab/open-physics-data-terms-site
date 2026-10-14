@@ -78,22 +78,53 @@ def nav(current):
         
     return '<nav class="sitenav">' + " · ".join(out) + "</nav>"
 
-def header(current, compact):
-    if compact:
-        return (f'<header class="compact"><div class="eyebrow">{EYEBROW}</div>'
-                f'<p class="sitetitle"><a href="index.html">{TITLE}</a></p>{nav(current)}</header>')
+def header(current, compact=False):
     return f"""<header>
 <div class="eyebrow">{EYEBROW}</div>
-<h1>{TITLE}</h1>
+<h1><a href="index.html">{TITLE}</a></h1>
 <p class="lede">Public-access rules now require physics collaborations to plan data releases, but none say what license the data should carry, who must be credited, or what a user may build from it. This site collects what collaborations across physics have actually done, and the questions still open.</p>
 <p class="meta">Organized by Amy Roberts (CU Denver, SuperCDMS), Michela Taufer (UT Knoxville), and Jessica Walker (UT Knoxville). Contributions are licensed CC BY 4.0 and archived at Zenodo with each release.</p>
 {nav(current)}
 </header>"""
 
+SITE_URL = "https://det-lab.github.io/open-physics-data-terms-site/"
+year = "2026"
+apa = f'Roberts, A., Taufer, M., Walker, J., and contributors ({year}). <em>{TITLE}</em> {e(version)}. Zenodo. <code>doi:{e(doi)}</code>'
+bibtex = f"""@misc{{roberts{year}openphysicsdata,
+  author    = {{Roberts, Amy and Taufer, Michela and Walker, Jessica and others}},
+  title     = {{{TITLE}}},
+  year      = {{{year}}},
+  publisher = {{Zenodo}},
+  doi       = {{{doi}}},
+  url       = {{{SITE_URL}}},
+  note      = {{{version}}}
+}}"""
+ris = f"""TY  - GEN
+AU  - Roberts, Amy
+AU  - Taufer, Michela
+AU  - Walker, Jessica
+TI  - {TITLE}
+PY  - {year}
+PB  - Zenodo
+DO  - {doi}
+UR  - {SITE_URL}
+N1  - {version}
+ER  - """
 FOOTER = f"""<footer>
-Cite as: Roberts, A., Taufer, M., Walker, J., and contributors (2026). <em>{TITLE}</em> {e(version)}. Zenodo. <code>doi:{e(doi)}</code><br>
-Source and contributions: <a href="https://github.com/det-lab/open-physics-data-terms"><code>github.com/det-lab/open-physics-data-terms</code></a>
-</footer>"""
+<div class="citebar"><span class="citelabel">Cite as</span>
+<span class="citefmt" role="group" aria-label="citation format">
+<button type="button" class="on" data-fmt="apa">APA</button><button type="button" data-fmt="bibtex">BibTeX</button><button type="button" data-fmt="ris">RIS</button></span></div>
+<div class="cite" data-fmt="apa">{apa}</div>
+<pre class="cite" data-fmt="bibtex" hidden>{e(bibtex)}</pre>
+<pre class="cite" data-fmt="ris" hidden>{e(ris)}</pre>
+<p class="src">Source and contributions: <a href="https://github.com/det-lab/open-physics-data-terms"><code>github.com/det-lab/open-physics-data-terms</code></a></p>
+</footer>
+<script>
+document.querySelectorAll('.citefmt button').forEach(b => b.addEventListener('click', () => {{
+  document.querySelectorAll('.citefmt button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.cite').forEach(c => c.hidden = c.dataset.fmt !== b.dataset.fmt);
+}}));
+</script>"""
 
 def write_page(path, pagetitle, current, body, compact):
     (here / path).write_text(f"""---
@@ -114,13 +145,13 @@ index_body = f"""<h2>Contributions</h2>
 <ul class="contrib">
 {"".join(contrib_li(c) for c in contribs)}
 </ul>"""
-write_page("index.qmd", TITLE, "index", index_body, compact=False)
+write_page("index.qmd", TITLE, "index", index_body, False)
 
 # remove stale generated pages, then write current ones
 for old in here.glob("*.qmd"):
     if old.name != "index.qmd":
         old.unlink()
 for slug, title, body in pages:
-    write_page(f"{slug}.qmd", f"{title} · Open physics data terms", slug, f"<h2>{e(title)}</h2>\n\n{body}", compact=True)
+    write_page(f"{slug}.qmd", f"{title} · Open physics data terms", slug, f"<h2>{e(title)}</h2>\n\n{body}", True)
 
 print(f"wrote index.qmd + {len(pages)} section pages: {[p[0] for p in pages]}; {len(contribs)} contributions")

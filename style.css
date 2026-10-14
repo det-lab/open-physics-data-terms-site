@@ -46,7 +46,15 @@ footer code,code{font-family:var(--mono);font-size:.8rem}
 .sitenav a{text-decoration:none;border-bottom:1px solid var(--rule)}
 .sitenav a:hover{border-bottom-color:var(--accent)}
 .sitenav .here{font-weight:600}
-header.compact{padding-bottom:14px;margin-bottom:20px}
-.sitetitle{font-size:1.05rem;font-weight:600;margin:.2em 0 0}
-.sitetitle a{color:var(--fg);text-decoration:none}
-.sitetitle a:hover{color:var(--accent)}
+h1 a{color:var(--fg);text-decoration:none}
+h1 a:hover{color:var(--accent)}
+/* citation footer */
+.citebar{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.citelabel{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+.citefmt button{font-family:var(--mono);font-size:.72rem;background:transparent;color:var(--muted);border:1px solid var(--rule);padding:1px 8px;cursor:pointer;margin-right:-1px}
+.citefmt button:first-child{border-radius:3px 0 0 3px}
+.citefmt button:last-child{border-radius:0 3px 3px 0}
+.citefmt button.on{color:var(--fg);background:var(--mark);border-color:var(--muted)}
+.citefmt button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+pre.cite{font-family:var(--mono);font-size:.78rem;line-height:1.4;margin:0;padding:8px 10px;border:1px solid var(--rule);border-radius:3px;overflow-x:auto;white-space:pre;color:var(--fg)}
+footer .src{margin-top:10px}
