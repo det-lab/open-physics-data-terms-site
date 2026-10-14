@@ -47,6 +47,10 @@ if secdir.exists():
 
 oq = (data / "open-questions.md").read_text().splitlines()
 oq_items = [l.split(". ", 1)[1] for l in oq if l[:1].isdigit()]
+open_questions = ""
+if oq_items:
+    open_questions = ('<h2>Open questions</h2>\n<p>Questions the discussion left open.</p>\n<ol class="oq">\n'
+                      + "".join(f"<li>{e(q)}</li>" for q in oq_items) + "\n</ol>\n")
 
 page = f"""---
 pagetitle: "Open physics data: what license and attribution terms should it carry?"
@@ -68,12 +72,7 @@ pagetitle: "Open physics data: what license and attribution terms should it carr
 
 {sections}
 
-<h2>Open questions</h2>
-<p>Questions the discussion left open.</p>
-<ol class="oq">
-{"".join(f"<li>{e(q)}</li>" for q in oq_items)}
-</ol>
-
+{open_questions}
 <footer>
 Cite as: Roberts, A., Taufer, M., Walker, J., and contributors (2026). <em>Open physics data: what license and attribution terms should it carry?</em> {e(version)}. Zenodo. <code>doi:{e(doi)}</code><br>
 Source and contributions: <a href="https://github.com/det-lab/open-physics-data-terms"><code>github.com/det-lab/open-physics-data-terms</code></a>
