@@ -69,7 +69,7 @@ pagetitle: "Open physics data: what license and attribution terms should it carr
 {sections}
 
 <h2>Open questions</h2>
-<p>Questions the discussion left open, kept as a list without owners or ranking.</p>
+<p>Questions the discussion left open.</p>
 <ol class="oq">
 {"".join(f"<li>{e(q)}</li>" for q in oq_items)}
 </ol>
