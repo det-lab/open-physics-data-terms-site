@@ -77,8 +77,9 @@ def contrib_cite(c):
     key = f"{re.sub(r'[^a-z]', '', fam.lower())}{year}"
     title = c.get("title") or f"Contribution by {c['name']}"
     pdf = SITE_URL + f'contributions/{Path(c["file"]).name}'
+    pdoi = c.get("doi") or doi
     apa = (f'{apa_names([(fam, giv)])} ({year}). {e(title)}. In {apa_in_names(EDITORS)} (Eds.), '
-           f'<em>{TITLE}</em> {e(version)}. Zenodo. <code>doi:{e(doi)}</code>')
+           f'<em>{TITLE}</em> {e(version)}. Zenodo. <code>doi:{e(pdoi)}</code>')
     bibtex = f"""@incollection{{{key},
   author    = {{{bib_names([(fam, giv)])}}},
   title     = {{{title}}},
@@ -86,7 +87,7 @@ def contrib_cite(c):
   editor    = {{{bib_names(EDITORS)}}},
   year      = {{{year}}},
   publisher = {{Zenodo}},
-  doi       = {{{doi}}},
+  doi       = {{{pdoi}}},
   url       = {{{pdf}}},
   note      = {{{version}}}
 }}"""
@@ -101,7 +102,7 @@ def contrib_cite(c):
     ris = "\n".join([
         "TY  - CHAP", f"AU  - {fam}, {giv}", f"TI  - {title}", f"T2  - {TITLE}",
         *[f"ED  - {f}, {g}" for f, g in EDITORS],
-        f"PY  - {year}", "PB  - Zenodo", f"DO  - {doi}", f"UR  - {pdf}", f"N1  - {version}", "ER  - "])
+        f"PY  - {year}", "PB  - Zenodo", f"DO  - {pdoi}", f"UR  - {pdf}", f"N1  - {version}", "ER  - "])
     return citebox({"apa": apa, "bibtex": bibtex, "biblatex": biblatex, "ris": ris}, label="Cite")
 
 def contrib_li(c):
@@ -114,8 +115,7 @@ def contrib_li(c):
     return (f'<li><div class="who">{e(c["name"])} <span class="aff">— {e(c["affiliation"])}</span> '
             f'<span class="tag">{tag}</span>{lictags}</div>'
             f'<div class="desc">{e(c["descriptor"])}</div>'
-            f'<div class="links"><span class="ttl">{link}</span><br>received {e(str(c.get("received") or "—"))} · '
-            f'approved {e(str(c.get("approved") or "—"))} · CC BY 4.0</div>'
+            f'<div class="links"><span class="ttl">{link}</span></div>'
             f'<details class="citedetails"><summary>Cite this page</summary>{contrib_cite(c)}</details></li>')
 
 
@@ -188,7 +188,7 @@ biblatex = f"""% biblatex (biber). Cite a single contribution as @incollection w
 }}"""
 ris = "\n".join(["TY  - GEN", *[f"ED  - {f}, {g}" for f, g in EDITORS], f"TI  - {TITLE}", f"PY  - {year}",
                   "PB  - Zenodo", f"DO  - {doi}", f"UR  - {SITE_URL}", f"N1  - {version}", "ER  - "])
-FOOTER = "<footer>" + citebox({"apa": apa, "bibtex": bibtex, "biblatex": biblatex, "ris": ris}) + """</footer>
+FOOTER = "<footer>" + citebox({"apa": apa, "bibtex": bibtex, "biblatex": biblatex, "ris": ris}, label="Cite the collection") + """</footer>
 <script>
 document.querySelectorAll('.citebox').forEach(box => box.querySelectorAll('.citefmt button').forEach(b => b.addEventListener('click', () => {
   box.querySelectorAll('.citefmt button').forEach(x => x.classList.toggle('on', x === b));
@@ -211,7 +211,7 @@ pagetitle: "{pagetitle}"
 """)
 
 index_body = f"""<h2>Contributions</h2>
-<p>One-page perspectives from people who have released data, used someone else's, or written the policy. Each is the contributor's own words, approved by them before posting.<span class="sn-ref">1</span><span class="sidenote">1. Pages drafted by the organizers from a 20-minute call are marked as such; the contributor edited and approved the text.</span></p>
+<p>One-page perspectives from people who have released data, used someone else's, or written the policy. Each is the contributor's own words, approved by them before posting; pages the organizers drafted from a 20-minute call are marked, and the contributor edited and approved the text.</p>
 <ul class="contrib">
 {"".join(contrib_li(c) for c in contribs)}
 </ul>"""
