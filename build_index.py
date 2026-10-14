@@ -57,7 +57,7 @@ pagetitle: "Open physics data: what license and attribution terms should it carr
 <div class="eyebrow">SESAPS 2026 · Kennesaw, GA · Nov 12–14 · moderated discussion</div>
 <h1>Open physics data: what license and attribution terms should it carry?</h1>
 <p class="lede">Public-access rules now require physics collaborations to plan data releases, but none say what license the data should carry, who must be credited, or what a user may build from it. This page collects what collaborations across physics have actually done, and the questions still open.</p>
-<p class="meta">Organized by Amy Roberts (CU Denver, SuperCDMS) and Michela Taufer (UT Knoxville). Contributions are licensed CC BY 4.0 and archived at Zenodo with each release.</p>
+<p class="meta">Organized by Amy Roberts (CU Denver, SuperCDMS), Michela Taufer (UT Knoxville), and Jessica Walker (UT Knoxville). Contributions are licensed CC BY 4.0 and archived at Zenodo with each release.</p>
 </header>
 
 <h2>Contributions</h2>
@@ -75,7 +75,7 @@ pagetitle: "Open physics data: what license and attribution terms should it carr
 </ol>
 
 <footer>
-Cite as: Roberts, A., Taufer, M., and contributors (2026). <em>Open physics data: what license and attribution terms should it carry?</em> {e(version)}. Zenodo. <code>doi:{e(doi)}</code><br>
+Cite as: Roberts, A., Taufer, M., Walker, J., and contributors (2026). <em>Open physics data: what license and attribution terms should it carry?</em> {e(version)}. Zenodo. <code>doi:{e(doi)}</code><br>
 Source and contributions: <a href="https://github.com/det-lab/open-physics-data-terms"><code>github.com/det-lab/open-physics-data-terms</code></a>
 </footer>
 </div>
