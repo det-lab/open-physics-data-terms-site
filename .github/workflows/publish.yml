@@ -11,6 +11,10 @@ on:
   repository_dispatch:
     types: [contributions-released]
 
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 permissions:
   contents: write
   pages: write
