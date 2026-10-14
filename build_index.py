@@ -83,7 +83,7 @@ def header(current, compact=False):
 <div class="eyebrow">{EYEBROW}</div>
 <h1><a href="index.html">{TITLE}</a></h1>
 <p class="lede">Public-access rules now require physics collaborations to plan data releases, but none say what license the data should carry, who must be credited, or what a user may build from it. This site collects what collaborations across physics have actually done, and the questions still open.</p>
-<p class="meta">Organized by Amy Roberts (CU Denver, SuperCDMS), Michela Taufer (UT Knoxville), and Jessica Walker (UT Knoxville). Contributions are licensed CC BY 4.0 and archived at Zenodo with each release.</p>
+<p class="meta">Organized by Amy Roberts (CU Denver, SuperCDMS), Michela Taufer (UT Knoxville), and Jessica Walker (UT Knoxville). Contributions are licensed CC BY 4.0, kept at <a href="https://github.com/det-lab/open-physics-data-terms">github.com/det-lab/open-physics-data-terms</a>, and archived at Zenodo with each release.</p>
 {nav(current)}
 </header>"""
 
@@ -130,7 +130,6 @@ FOOTER = f"""<footer>
 <pre class="cite" data-fmt="bibtex" hidden>{e(bibtex)}</pre>
 <pre class="cite" data-fmt="biblatex" hidden>{e(biblatex)}</pre>
 <pre class="cite" data-fmt="ris" hidden>{e(ris)}</pre>
-<p class="src">Source and contributions: <a href="https://github.com/det-lab/open-physics-data-terms"><code>github.com/det-lab/open-physics-data-terms</code></a></p>
 </footer>
 <script>
 document.querySelectorAll('.citefmt button').forEach(b => b.addEventListener('click', () => {{
