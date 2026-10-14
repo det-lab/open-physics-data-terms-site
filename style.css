@@ -40,3 +40,13 @@ th{font-weight:600;color:var(--muted);font-size:.72rem;letter-spacing:.06em;text
 footer{margin-top:48px;border-top:1px solid var(--rule);padding-top:14px;font-size:.85rem;color:var(--muted)}
 footer code,code{font-family:var(--mono);font-size:.8rem}
 .muted{color:var(--muted)}
+
+/* site navigation and compact header on section pages */
+.sitenav{font-family:var(--mono);font-size:.78rem;letter-spacing:.02em;margin-top:14px}
+.sitenav a{text-decoration:none;border-bottom:1px solid var(--rule)}
+.sitenav a:hover{border-bottom-color:var(--accent)}
+.sitenav .here{font-weight:600}
+header.compact{padding-bottom:14px;margin-bottom:20px}
+.sitetitle{font-size:1.05rem;font-weight:600;margin:.2em 0 0}
+.sitetitle a{color:var(--fg);text-decoration:none}
+.sitetitle a:hover{color:var(--accent)}

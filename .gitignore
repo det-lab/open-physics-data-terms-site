@@ -1,6 +1,6 @@
 _site/
 .quarto/
-index.qmd
+*.qmd
 contributions/*.pdf
 .DS_Store
 
