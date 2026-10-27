@@ -157,7 +157,7 @@ if oq_items:
     pages.append(("open-questions", "Open questions",
                   "Questions the discussion left open.\n\n" + "\n".join(f"1. {q}" for q in oq_items)))
 
-EYEBROW = "SESAPS 2026 · Kennesaw, GA · Saturday Nov 14, 11:45 am · moderated discussion"
+EYEBROW = "SESAPS 2026 · Kennesaw, GA · Saturday Nov 14, 11:45 am–12:45 pm · moderated discussion"
 
 def nav(current):
     items = [("index", "Contributions")] + [(sl, t) for sl, t, _ in pages]
