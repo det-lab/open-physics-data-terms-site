@@ -14,7 +14,7 @@ website:
 format:
   html:
     theme: none
-    css: style.css
+    css: site.css
     minimal: true
     toc: false
     anchor-sections: false
