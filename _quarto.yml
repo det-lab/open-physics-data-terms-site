@@ -4,6 +4,7 @@ project:
   pre-render: build_index.py
   resources:
     - contributions/*.pdf
+    - assets/*.png
 
 website:
   title: "Open physics data terms"

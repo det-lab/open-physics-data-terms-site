@@ -65,3 +65,11 @@ footer .src{margin-top:10px}
 .citedetails .citebox{margin-top:6px}
 .citedetails .cite{font-size:.9rem}
 .citedetails pre.cite{font-size:.74rem}
+
+/* support and acknowledgement */
+footer .support{margin-top:22px;padding-top:14px;border-top:1px solid var(--rule)}
+footer .logos{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-bottom:8px}
+footer .logos img{display:block;height:auto}
+footer .logo-nsdf{height:44px}
+footer .logo-nexus{height:34px}
+footer .support p{margin:0;max-width:60ch}
