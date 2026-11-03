@@ -68,8 +68,8 @@ footer .src{margin-top:10px}
 
 /* support and acknowledgement */
 footer .support{margin-top:22px;padding-top:14px;border-top:1px solid var(--rule)}
-footer .logos{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-bottom:8px}
-footer .logos img{display:block;height:auto}
-footer .logo-nsdf{height:44px}
-footer .logo-nexus{height:34px}
+footer .logos{display:flex;flex-direction:row;align-items:center;gap:28px;flex-wrap:nowrap;margin-bottom:10px}
+footer .logos a{display:inline-block;line-height:0}
+footer .logos img{display:inline-block;height:36px;width:auto;max-width:none;opacity:.85}
+footer .logos a:hover img{opacity:1}
 footer .support p{margin:0;max-width:60ch}
