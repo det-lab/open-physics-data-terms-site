@@ -202,9 +202,7 @@ biblatex = f"""% biblatex (biber). Cite a single contribution as @incollection w
 ris = "\n".join(["TY  - GEN", *[f"ED  - {f}, {g}" for f, g in EDITORS], f"TI  - {TITLE}", f"PY  - {year}",
                   "PB  - Zenodo", f"DO  - {doi}", f"UR  - {SITE_URL}", f"N1  - {version}", "ER  - "])
 SUPPORT = """<div class="support">
-<div class="logos">
-<a href="https://nationalsciencedatafabric.org/" title="National Science Data Fabric"><img src="assets/nsdf.png" alt="NSDF: National Science Data Fabric" class="logo-nsdf"></a>
-<a href="https://nexus-dm.org/" title="NEXUS-DM: Networked Exchange for Dark Matter"><img src="assets/nexus-dm.png" alt="NEXUS-DM: Networked Exchange for Dark Matter" class="logo-nexus"></a>
+<div class="logos"><a href="https://nationalsciencedatafabric.org/" title="National Science Data Fabric"><img src="assets/nsdf-gray.png" alt="NSDF: National Science Data Fabric" class="logo-nsdf"></a><a href="https://nexus-dm.org/" title="NEXUS-DM: Networked Exchange for Dark Matter"><img src="assets/nexus-dm-gray.png" alt="NEXUS-DM: Networked Exchange for Dark Matter" class="logo-nexus"></a>
 </div>
 <p>This work is supported by the <a href="https://nationalsciencedatafabric.org/">National Science Data Fabric</a> (NSF awards #2609465 and #2138811) and by <a href="https://nexus-dm.org/">NEXUS-DM</a>, an NSF FAIROS project (award #2531754).</p>
 </div>"""
