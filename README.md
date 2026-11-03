@@ -11,7 +11,7 @@ content; the contributions, catalog, and open questions live in the other one.
   and `CITATION.cff` (collection DOI and version) from the content repo, and
   `CITATION.cff` from the codebook repo, and writes one .qmd per page. It also
   copies the contribution PDFs into `contributions/` so links are relative.
-- `_quarto.yml` uses `theme: none` and `style.css`: plain semantic HTML,
+- `_quarto.yml` uses `theme: none` and `site.css`: plain semantic HTML,
   serif reading column, sidenotes in the margin on wide screens.
 - `.github/workflows/publish.yml` runs on every push to `main`, on manual
   dispatch (optionally with a tag), and on a `contributions-released`
