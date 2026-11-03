@@ -71,7 +71,7 @@ footer .support{margin-top:22px;padding-top:14px;border-top:1px solid var(--rule
 footer .logos,footer .logos p{display:flex;flex-direction:row;align-items:center;gap:18px;flex-wrap:nowrap;margin:0 0 10px 0}
 footer .logos a{display:inline-block;line-height:0}
 footer .logos img{display:inline-block;width:auto;max-width:none;opacity:.85}
-footer .logo-nsdf{height:23px}
-footer .logo-nexus{height:16px}
+footer .logo-nsdf{height:32px}
+footer .logo-nexus{height:22px}
 footer .logos a:hover img{opacity:1}
 footer .support p{margin:0;max-width:60ch}
