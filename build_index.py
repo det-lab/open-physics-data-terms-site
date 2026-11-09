@@ -56,6 +56,10 @@ def split_name(c):
     parts = c["name"].split()
     return parts[-1], " ".join(parts[:-1])
 
+def author_pairs(c):
+    """[(family, given), ...]: the authors list for multi-author pages, else the single contributor."""
+    return [split_name(a) for a in (c.get("authors") or [c])]
+
 def initials(given):
     return " ".join(g[0] + "." for g in given.replace("-", " ").split())
 
@@ -86,15 +90,16 @@ def citebox(entries, label="Cite as", open_default="apa"):
             f'<span class="citefmt" role="group" aria-label="citation format">{btns}</span></div>' + "".join(boxes) + "</div>")
 
 def contrib_cite(c):
-    fam, giv = split_name(c)
+    pairs = author_pairs(c)
+    fam, giv = pairs[0]
     key = f"{re.sub(r'[^a-z]', '', fam.lower())}{year}"
     title = c.get("title") or f"Contribution by {c['name']}"
     pdf = SITE_URL + f'contributions/{Path(c["file"]).name}'
     pdoi = c.get("doi") or doi
-    apa = (f'{apa_names([(fam, giv)])} ({year}). {e(title)}. In {apa_in_names(EDITORS)} (Eds.), '
+    apa = (f'{apa_names(pairs)} ({year}). {e(title)}. In {apa_in_names(EDITORS)} (Eds.), '
            f'<em>{TITLE}</em> {e(version)}. Zenodo. <code>doi:{e(pdoi)}</code>')
     bibtex = f"""@incollection{{{key},
-  author    = {{{bib_names([(fam, giv)])}}},
+  author    = {{{bib_names(pairs)}}},
   title     = {{{title}}},
   booktitle = {{{TITLE}}},
   editor    = {{{bib_names(EDITORS)}}},
@@ -106,14 +111,14 @@ def contrib_cite(c):
 }}"""
     biblatex = f"""% biblatex (biber); needs the @collection entry {COLL_KEY} from the site footer.
 @incollection{{{key},
-  author   = {{{bib_names([(fam, giv)])}}},
+  author   = {{{bib_names(pairs)}}},
   title    = {{{title}}},
   crossref = {{{COLL_KEY}}},
   url      = {{{pdf}}},
   urldate  = {{{datetime.date.today().isoformat()}}}
 }}"""
     ris = "\n".join([
-        "TY  - CHAP", f"AU  - {fam}, {giv}", f"TI  - {title}", f"T2  - {TITLE}",
+        "TY  - CHAP", *[f"AU  - {f}, {g}" for f, g in pairs], f"TI  - {title}", f"T2  - {TITLE}",
         *[f"ED  - {f}, {g}" for f, g in EDITORS],
         f"PY  - {year}", "PB  - Zenodo", f"DO  - {pdoi}", f"UR  - {pdf}", f"N1  - {version}", "ER  - "])
     return citebox({"apa": apa, "bibtex": bibtex, "biblatex": biblatex, "ris": ris}, label="Cite")
