@@ -33,6 +33,8 @@ cb = cff(codebook_dir / "CITATION.cff")
 e = html.escape
 
 contribs = yaml.safe_load((data / "contributions.yml").read_text()) or []
+# Only pages the contributor has approved are listed; an entry with approved: null stays off the site.
+contribs = [c for c in contribs if c.get("approved")]
 # copy PDFs next to the site so links are relative
 (here / "contributions").mkdir(exist_ok=True)
 for c in contribs:
