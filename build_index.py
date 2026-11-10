@@ -236,7 +236,7 @@ pagetitle: "{pagetitle}"
 """)
 
 index_body = f"""<h2>Contributions</h2>
-<p>One-page perspectives from people who have released data, used someone else's, or written the policy. Each is the contributor's own words, approved by them before posting; pages the organizers drafted from a 20-minute call are marked, and the contributor edited and approved the text.</p>
+<p>One-page perspectives from people who have released data, used someone else's, or written the policy. Pages the organizers drafted from a 20-minute call are marked; the contributor edited and approved the text.</p>
 <ul class="contrib">
 {"".join(contrib_li(c) for c in contribs)}
 </ul>"""
