@@ -35,6 +35,8 @@ e = html.escape
 contribs = yaml.safe_load((data / "contributions.yml").read_text()) or []
 # Only pages the contributor has approved are listed; an entry with approved: null stays off the site.
 contribs = [c for c in contribs if c.get("approved")]
+rel_path = data / "related.yml"
+related = [r for r in (yaml.safe_load(rel_path.read_text()) or []) if r.get("approved")] if rel_path.exists() else []
 # copy PDFs next to the site so links are relative
 (here / "contributions").mkdir(exist_ok=True)
 for c in contribs:
@@ -139,6 +141,60 @@ def contrib_li(c):
             f'<details class="citedetails"><summary>Cite this page</summary>{contrib_cite(c)}</details></li>')
 
 
+def rel_pairs(r):
+    out = []
+    for a in r.get("authors") or []:
+        if isinstance(a, dict):
+            out.append(split_name(a))
+        else:
+            parts = a.split()
+            out.append((parts[-1], " ".join(parts[:-1])))
+    return out
+
+
+def related_cite(r):
+    pairs = rel_pairs(r)
+    fam = pairs[0][0]
+    key = f"{re.sub(r'[^a-z]', '', fam.lower())}{r['year']}"
+    title, venue, rdoi, url = r["title"], r.get("venue", ""), r.get("doi", ""), r.get("url", "")
+    apa = f'{apa_names(pairs)} ({r["year"]}). {e(title)}. {e(venue)}.' + (f' <code>doi:{e(rdoi)}</code>' if rdoi else "")
+    bibtex = f"""@misc{{{key},
+  author = {{{bib_names(pairs)}}},
+  title  = {{{title}}},
+  year   = {{{r['year']}}},
+  howpublished = {{{venue}}},
+  doi    = {{{rdoi}}},
+  url    = {{{url}}}
+}}"""
+    biblatex = f"""@online{{{key},
+  author  = {{{bib_names(pairs)}}},
+  title   = {{{title}}},
+  year    = {{{r['year']}}},
+  note    = {{{venue}}},
+  doi     = {{{rdoi}}},
+  url     = {{{url}}},
+  urldate = {{{datetime.date.today().isoformat()}}}
+}}"""
+    ris = "\n".join(["TY  - UNPB", *[f"AU  - {f}, {g}" for f, g in pairs], f"TI  - {title}", f"PY  - {r['year']}",
+                     f"PB  - {venue}", f"DO  - {rdoi}", f"UR  - {url}", "ER  - "])
+    return citebox({"apa": apa, "bibtex": bibtex, "biblatex": biblatex, "ris": ris}, label="Cite")
+
+
+def related_li(r):
+    pairs = rel_pairs(r)
+    names = ", ".join(f"{g} {f}".strip() for f, g in pairs[:3]) + (" et al." if len(pairs) > 3 else "")
+    tags = ' <span class="tag">published elsewhere</span>'
+    if r.get("license"):
+        tags += f' <span class="tag lic">paper: {e(str(r["license"]))}</span>'
+    links = f'<a href="{e(r.get("url") or "https://doi.org/" + r["doi"])}">{e(r["title"])}</a>'
+    if r.get("arxiv"):
+        links += f' · <a href="https://arxiv.org/abs/{e(r["arxiv"])}">arXiv:{e(r["arxiv"])}</a>'
+    return (f'<li><div class="who">{e(names)} <span class="aff">— {e(r.get("venue", ""))}</span>{tags}</div>'
+            f'<div class="desc">{e(r["descriptor"])}</div>'
+            f'<div class="links"><span class="ttl">{links}</span></div>'
+            f'<details class="citedetails"><summary>Cite this paper</summary>{related_cite(r)}</details></li>')
+
+
 import re
 
 # ---- sections -> pages -------------------------------------------------------
@@ -240,6 +296,13 @@ index_body = f"""<h2>Contributions</h2>
 <ul class="contrib">
 {"".join(contrib_li(c) for c in contribs)}
 </ul>"""
+if related:
+    index_body += f"""
+<h2>Also recommended as a pre-read</h2>
+<p>Published elsewhere and linked here with the authors' permission. These are not part of the archived collection; cite them by their own DOI.</p>
+<ul class="contrib">
+{"".join(related_li(r) for r in related)}
+</ul>"""
 write_page("index.qmd", TITLE, "index", index_body, False)
 
 # remove stale generated pages, then write current ones
@@ -259,4 +322,4 @@ for i, (slug, title, body) in enumerate(pages):
 for slug, title, body in pages:
     write_page(f"{slug}.qmd", f"{title} · Open physics data terms", slug, f"<h2>{e(title)}</h2>\n\n{body}", True)
 
-print(f"wrote index.qmd + {len(pages)} section pages: {[p[0] for p in pages]}; {len(contribs)} contributions")
+print(f"wrote index.qmd + {len(pages)} section pages: {[p[0] for p in pages]}; {len(contribs)} contributions; {len(related)} related")
